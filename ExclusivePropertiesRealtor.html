@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exclusive Properties Realtor</title>
+
+<style>
+:root{
+--primary:#5C4B3B;
+--secondary:#A68A64;
+--accent:#D8C3A5;
+--light:#F4F1EA;
+--dark:#3E362E;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+body{background:var(--light);color:var(--dark);scroll-behavior:smooth}
+
+/* NAV */
+nav{
+background:var(--primary);
+padding:15px 50px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+position:sticky;
+top:0;
+z-index:1000;
+}
+nav h1{color:white;}
+nav ul{list-style:none;display:flex;gap:25px;}
+nav a{color:white;text-decoration:none;}
+nav a:hover{color:var(--accent);}
+
+/* HERO */
+.hero{
+background:url('cascade.png') center/cover no-repeat;
+height:85vh;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+color:white;
+position:relative;
+}
+.hero::before{
+content:"";
+position:absolute;
+width:100%;height:100%;
+background:rgba(0,0,0,.6);
+}
+.hero-content{position:relative;z-index:1;}
+.hero h2{font-size:3rem;margin-bottom:15px;}
+.hero p{margin-bottom:20px;font-size:1.2rem;}
+.hero button{
+padding:12px 25px;
+border:none;
+background:var(--secondary);
+color:white;
+cursor:pointer;
+}
+
+/* SECTIONS */
+section{padding:80px 50px;}
+.section-title{text-align:center;margin-bottom:40px;color:var(--primary);}
+
+/* SEARCH */
+.filter-bar{
+display:flex;
+flex-wrap:wrap;
+gap:15px;
+justify-content:center;
+margin-bottom:40px;
+}
+.filter-bar input, .filter-bar select{
+padding:10px;
+border:1px solid #ccc;
+}
+.filter-bar button{
+padding:10px 20px;
+background:var(--primary);
+color:white;
+border:none;
+cursor:pointer;
+}
+
+/* PROPERTY GRID */
+.properties{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:30px;
+}
+.card{
+background:white;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 4px 15px rgba(0,0,0,.1);
+transition:.3s;
+cursor:pointer;
+}
+.card:hover{transform:translateY(-10px);}
+.card img{width:100%;height:220px;object-fit:cover;}
+.card-content{padding:20px;}
+.price{color:var(--secondary);font-weight:bold;margin-top:10px;}
+
+/* MODAL */
+.modal{
+display:none;
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,.6);
+justify-content:center;
+align-items:center;
+}
+.modal-content{
+background:white;
+padding:30px;
+max-width:600px;
+border-radius:10px;
+}
+.close{cursor:pointer;float:right;font-size:20px;}
+
+/* TESTIMONIALS */
+.testimonial{
+background:white;
+padding:25px;
+border-radius:10px;
+margin-bottom:20px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+/* FAQ */
+.faq-item{margin-bottom:15px;}
+.faq-item h4{
+cursor:pointer;
+background:var(--accent);
+padding:10px;
+}
+.faq-item p{
+display:none;
+padding:10px;
+background:white;
+}
+
+/* CALCULATOR */
+.calculator{
+background:white;
+max-width:500px;
+margin:auto;
+padding:30px;
+border-radius:10px;
+box-shadow:0 4px 15px rgba(0,0,0,.1);
+}
+.calculator input{
+width:100%;
+padding:10px;
+margin:10px 0;
+}
+.calculator button{
+width:100%;
+padding:12px;
+border:none;
+background:var(--primary);
+color:white;
+}
+.result{margin-top:15px;font-weight:bold;}
+
+/* CONTACT */
+.contact form{max-width:600px;margin:auto;}
+.contact input,.contact textarea{
+width:100%;
+padding:12px;
+margin-bottom:15px;
+}
+
+/* FOOTER */
+footer{
+background:var(--dark);
+color:white;
+padding:40px;
+}
+.footer-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:30px;
+}
+</style>
+</head>
+<body>
+
+<nav>
+<h1>Exclusive Properties Realtor</h1>
+<ul>
+<li><a href="#properties">Properties</a></li>
+<li><a href="#testimonials">Testimonials</a></li>
+<li><a href="#faq">FAQ</a></li>
+<li><a href="#calculator">Mortgage</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+</nav>
+
+<div class="hero">
+<div class="hero-content">
+<h2>Exclusive Properties Realtor</h2>
+<p>Here to help with all your property needs!</p>
+<button onclick="document.getElementById('properties').scrollIntoView()">Browse Listings</button>
+</div>
+</div>
+
+<section id="properties">
+<h2 class="section-title">Available Listings</h2>
+
+<div class="filter-bar">
+<input type="text" id="search" placeholder="Search property...">
+<select id="bedrooms">
+<option value="">Bedrooms</option>
+<option value="1">1+</option>
+<option value="2">2+</option>
+<option value="3">3+</option>
+</select>
+<button onclick="filterProperties()">Search</button>
+</div>
+
+<div class="properties" id="propertyList"></div>
+</section>
+
+<section id="testimonials">
+<h2 class="section-title">What Our Clients Say</h2>
+<div class="testimonial">"Very professional and trustworthy service!" – Client A</div>
+<div class="testimonial">"Smooth rental process and excellent communication." – Client B</div>
+</section>
+
+<section id="faq">
+<h2 class="section-title">Frequently Asked Questions</h2>
+<div class="faq-item">
+<h4 onclick="toggleFAQ(this)">How do I schedule a viewing?</h4>
+<p>Call us at +1 (868) 730-9622 or email exclusivepropertiestt@gmail.com.</p>
+</div>
+<div class="faq-item">
+<h4 onclick="toggleFAQ(this)">Do you help with mortgage guidance?</h4>
+<p>Yes, we assist clients with mortgage information and financing guidance.</p>
+</div>
+</section>
+
+<section id="calculator">
+<h2 class="section-title">Mortgage Calculator</h2>
+<div class="calculator">
+<input type="number" id="amount" placeholder="Loan Amount">
+<input type="number" id="interest" placeholder="Interest Rate (%)">
+<input type="number" id="years" placeholder="Loan Term (Years)">
+<button onclick="calculateMortgage()">Calculate</button>
+<div class="result" id="result"></div>
+</div>
+</section>
+
+<section id="contact" class="contact">
+<h2 class="section-title">Contact Us</h2>
+<form>
+<input type="text" placeholder="Full Name">
+<input type="email" placeholder="Email">
+<textarea rows="5" placeholder="Message"></textarea>
+<button type="submit">Send Message</button>
+</form>
+<p style="text-align:center;margin-top:20px;">
+Phone: +1 (868) 730-9622<br>
+Email: exclusivepropertiestt@gmail.com
+</p>
+</section>
+
+<footer>
+<p style="text-align:center;">© 2026 Exclusive Properties Realtor | Here to help with all your property needs!</p>
+</footer>
+
+<div class="modal" id="propertyModal">
+<div class="modal-content">
+<span class="close" onclick="closeModal()">✖</span>
+<h3 id="modalTitle"></h3>
+<p id="modalDetails"></p>
+</div>
+</div>
+
+<script>
+const properties=[
+
+{
+name:"Cascade Condo",
+bedrooms:3,
+price:2500,
+image:"cascade.png",
+details:"3 Beds | 2 Baths | Furnished | Utilities Included"
+},
+
+{
+name:"Balmain Couva Land",
+bedrooms:0,
+price:15000000,
+image:"balmain.png",
+details:"3.5 Acres Freehold | Approved for Shopping Mall"
+},
+
+{
+name:"Curepe Apartment",
+bedrooms:1,
+price:2900,
+image:"curepe.png",
+details:"1 Bedroom | Gated | Parking | AC Included"
+}
+
+];
+
+function displayProperties(list){
+let container=document.getElementById("propertyList");
+container.innerHTML="";
+list.forEach(p=>{
+container.innerHTML+=`
+<div class="card" onclick="openModal('${p.name}','${p.details}')">
+<img src="${p.image}">
+<div class="card-content">
+<h3>${p.name}</h3>
+<p>${p.bedrooms>0?p.bedrooms+" Bedroom(s)":"Land Property"}</p>
+<p class="price">$${p.price.toLocaleString()}</p>
+</div>
+</div>`;
+});
+}
+
+function filterProperties(){
+let search=document.getElementById("search").value.toLowerCase();
+let bed=document.getElementById("bedrooms").value;
+
+let filtered=properties.filter(p=>{
+return (!search||p.name.toLowerCase().includes(search))
+&&(!bed||p.bedrooms>=bed);
+});
+displayProperties(filtered);
+}
+
+function openModal(title,details){
+document.getElementById("modalTitle").innerText=title;
+document.getElementById("modalDetails").innerText=details;
+document.getElementById("propertyModal").style.display="flex";
+}
+function closeModal(){
+document.getElementById("propertyModal").style.display="none";
+}
+
+function toggleFAQ(element){
+let p=element.nextElementSibling;
+p.style.display=p.style.display==="block"?"none":"block";
+}
+
+function calculateMortgage(){
+let amount=document.getElementById("amount").value;
+let interest=document.getElementById("interest").value/100/12;
+let years=document.getElementById("years").value*12;
+let x=Math.pow(1+interest,years);
+let monthly=(amount*x*interest)/(x-1);
+document.getElementById("result").innerHTML=
+monthly?"Monthly Payment: $"+monthly.toFixed(2):
+"Please fill all fields correctly.";
+}
+
+displayProperties(properties);
+</script>
+
+</body>
+</html>
